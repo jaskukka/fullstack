@@ -6,6 +6,32 @@ const Button = ({handleClick, text}) => (
   </button>
 )
 
+const Statistics = ({good, neutral, bad}) => {
+  const all = good+neutral+bad
+  let average = 0
+  let positive = 0
+
+  if (good+neutral+bad === 0) {
+    average = 0
+    positive = 0
+  }
+  else {
+    average = (good + neutral*0 + bad*-1)/(good+neutral+bad)
+    positive = (good/(good+bad+neutral)) * 100
+  }
+
+  return (
+    <div>
+      Good: {good} <br />
+      Neutral: {neutral} <br />
+      Bad: {bad} <br />
+      All: {all} <br />
+      Average: {average} <br />
+      Positive: {positive}%
+    </div>
+  )
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -18,22 +44,6 @@ const App = () => {
 
   const handleBad = () => setBad(bad + 1)
 
-  const calculateAverage = () => {
-    if (good + bad + neutral === 0) return 0
-    return (
-      (good + neutral*0 + bad*-1)/(good+neutral+bad)
-    )
-  }
-
-  const calculatePositive = () => {
-    if (good+bad+neutral === 0) {
-      return 0
-    }
-    return (
-      (good/(good+bad+neutral)) * 100
-    )
-  }
-
   return (
     <>
       <h3>Give feedback:</h3>
@@ -41,12 +51,7 @@ const App = () => {
       <Button handleClick={handleNeutral} text='Neutral' />
       <Button handleClick={handleBad} text='Bad' />
       <h3>Statistics:</h3>
-      Good: {good} <br />
-      Neutral: {neutral} <br />
-      Bad: {bad} <br />
-      All: {good+bad+neutral} <br />
-      Average: {calculateAverage()} <br />
-      Positive: {calculatePositive()}%
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </>
   )
 }
